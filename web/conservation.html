@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conservation | Oceania</title>
+<link rel="stylesheet" href="loader.css">
+
+  <!-- Font Awesome icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff;
+      color:#1a1a1a;
+    }
+
+    /* ===== panel (giữ style chung với 2 trang trước) ===== */
+    .panel{
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+
+      /* nền sáng giống ảnh */
+      background: radial-gradient(1200px 600px at 50% -50%, rgba(0,170,180,.10), transparent 60%),
+                  radial-gradient(900px 600px at 110% 10%, rgba(0,170,180,.12), transparent 55%),
+                  #fbfdff;
+    }
+
+    /* blobs góc (giống hình) */
+    .blob{
+      position:absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 60% 40% 55% 45% / 55% 55% 45% 45%;
+      background: linear-gradient(180deg, rgba(0,170,180,.25), rgba(0,170,180,.10));
+      filter: blur(0px);
+      opacity:.9;
+      pointer-events:none;
+      z-index: 0;
+    }
+    .blob.tl{ left:-140px; top:-140px; transform: rotate(12deg); }
+    .blob.br{ right:-170px; bottom:-170px; transform: rotate(-18deg); }
+
+    .blob2{
+      position:absolute;
+      width: 210px;
+      height: 210px;
+      border-radius: 55% 45% 45% 55% / 45% 55% 45% 55%;
+      background: linear-gradient(180deg, rgba(0,170,180,.20), rgba(0,170,180,.06));
+      opacity:.85;
+      pointer-events:none;
+      z-index: 0;
+    }
+    .blob2.tr{ right:-70px; top:-60px; transform: rotate(8deg); }
+
+    /* ===== topbar giống index/gallery ===== */
+    .topbar{
+      position: absolute;
+      top: 14px;
+      left: 0;
+      right: 0;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .nav{
+      pointer-events: auto;
+      display:flex;
+      gap: 34px;
+      align-items:center;
+      font-size: 13px;
+      letter-spacing:.2px;
+      color: rgba(0,0,0,.55);
+      user-select:none;
+    }
+
+    .nav a{
+      text-decoration:none;
+      color: inherit;
+      padding: 6px 2px;
+      position: relative;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0%;
+      height:1px;
+      background: rgba(0,0,0,.45);
+      transition: width .25s ease;
+    }
+    .nav a:hover::after{ width:100%; }
+
+    .nav a.active{ color: rgba(0,0,0,.75); }
+    .nav a.active::after{ width:100%; }
+
+    .search{
+      pointer-events: auto;
+      position:absolute;
+      right: 22px;
+      top: 0;
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      display:grid;
+      place-items:center;
+      color: rgba(0,0,0,.55);
+      cursor:pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .search:hover{
+      background: rgba(255,255,255,.65);
+      transform: translateY(-1px);
+    }
+
+    /* social giống 2 trang trước */
+    .social{
+      position:absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      z-index: 5;
+    }
+    .social a{
+      width: 26px;
+      height: 26px;
+      display:grid;
+      place-items:center;
+      border-radius: 8px;
+      color: rgba(0,0,0,.55);
+      text-decoration:none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .social a:hover{
+      transform: translateX(-2px);
+      background: rgba(255,255,255,.65);
+    }
+
+    /* ===== content ===== */
+    .content{
+      position: relative;
+      z-index: 2;
+      width: min(1100px, calc(100vw - 44px));
+      margin: 0 auto;
+      padding: 86px 0 60px; /* chừa topbar */
+    }
+
+    /* header line: logo + menu nhỏ (tương tự ảnh) */
+    .brand-row{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      color: rgba(0,0,0,.78);
+      font-weight: 750;
+    }
+    .brand .mark{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(0,170,180,.12);
+      border: 1px solid rgba(0,0,0,.06);
+      display:grid;
+      place-items:center;
+      color: rgba(0,120,130,.85);
+    }
+
+    .mini-links{
+      display:flex;
+      gap: 18px;
+      align-items:center;
+      color: rgba(0,0,0,.55);
+      font-size: 12px;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+    .mini-links a{
+      text-decoration:none;
+      color: inherit;
+      padding: 6px 0;
+      position: relative;
+    }
+    .mini-links a:hover{ color: rgba(0,0,0,.72); }
+
+    .hero{
+      padding: 10px 0 12px;
+      max-width: 70ch;
+    }
+    .hero h1{
+      margin: 0 0 10px;
+      font-size: clamp(26px, 3.4vw, 44px);
+      letter-spacing: .2px;
+      color: rgba(0,0,0,.82);
+    }
+    .hero p{
+      margin:0;
+      line-height: 1.65;
+      font-size: 14px;
+      color: rgba(0,0,0,.58);
+    }
+
+    .section{
+      margin-top: 34px;
+    }
+    .section h2{
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: .2px;
+      color: rgba(0,0,0,.78);
+    }
+    .divider{
+      height:1px;
+      width: 100%;
+      background: rgba(0,0,0,.08);
+      margin-bottom: 16px;
+    }
+
+    /* highlights cards */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 900px){
+      .cards{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border-radius: 18px;
+      overflow:hidden;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 14px 34px rgba(0,0,0,.08);
+      backdrop-filter: blur(8px);
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+      cursor: pointer;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 20px 46px rgba(0,0,0,.12);
+      background: rgba(255,255,255,.82);
+    }
+
+    .card .img{
+      height: 170px;
+      background: rgba(0,0,0,.04);
+    }
+    .card .img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .card .body{
+      padding: 14px 14px 16px;
+    }
+    .card .title{
+      margin:0 0 6px;
+      font-size: 18px;
+      font-weight: 800;
+      color: rgba(0,0,0,.80);
+    }
+    .card .desc{
+      margin:0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(0,0,0,.55);
+    }
+
+    /* action blocks */
+    .actions{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 900px){
+      .actions{ grid-template-columns: 1fr; }
+    }
+
+    .action{
+      border-radius: 18px;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 14px 34px rgba(0,0,0,.08);
+      backdrop-filter: blur(8px);
+      padding: 18px 18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      min-height: 170px;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .action:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 20px 46px rgba(0,0,0,.12);
+      background: rgba(255,255,255,.82);
+    }
+
+    .icon-round{
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: rgba(0,170,180,.10);
+      border: 1px solid rgba(0,0,0,.06);
+      display:grid;
+      place-items:center;
+      color: rgba(0,120,130,.90);
+      font-size: 22px;
+    }
+
+    .action h3{
+      margin:0;
+      font-size: 16px;
+      font-weight: 850;
+      color: rgba(0,0,0,.78);
+    }
+
+    .btn-row{
+      margin-top:auto;
+      display:flex;
+      justify-content: center;
+    }
+
+    .btn{
+      border: 1px solid rgba(0,120,130,.28);
+      background: rgba(255,255,255,.65);
+      color: rgba(0,120,130,.92);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      cursor:pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.88);
+      border-color: rgba(0,120,130,.40);
+    }
+
+    .btn.primary{
+      background: rgba(0,120,130,.92);
+      color: #fff;
+      border-color: rgba(0,120,130,.92);
+      padding: 11px 16px;
+    }
+    .btn.primary:hover{
+      background: rgba(0,120,130,1);
+    }
+
+    /* responsive giống các trang trước */
+    @media (max-width: 520px){
+      .nav{ gap: 18px; font-size: 12px; }
+      .topbar{ padding: 0 14px; }
+      .search{ right: 14px; }
+      .social{ right: 10px; }
+      .content{ width: calc(100vw - 28px); padding-top: 84px; }
+      .mini-links{ display:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="panel">
+
+    <!-- blobs background -->
+    <div class="blob tl"></div>
+    <div class="blob2 tr"></div>
+    <div class="blob br"></div>
+
+    <!-- Header (giống index/gallery) -->
+    <header class="topbar">
+      <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a class="active" href="conservation.html">Conservation</a>
+      </nav>
+
+      <div class="search" id="focusSearch" title="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </header>
+
+    <!-- Social -->
+    <aside class="social" aria-label="Social Links">
+      <a href="https://www.facebook.com/profile.php?id=61577759272385" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/nguyn.minh859/" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://x.com/NguynMinht457" title="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+    </aside>
+
+    <!-- Content -->
+    <section class="content">
+
+      <div class="brand-row">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"><i class="fa-solid fa-seedling"></i></div>
+          <div>Bảo tồn</div>
+        </div>
+
+
+      </div>
+
+      <div class="hero">
+        <h1>Chung tay bảo vệ đại dương</h1>
+        <p>
+          Cùng nhau giảm rác thải nhựa, phục hồi hệ sinh thái và lan toả lối sống xanh.
+          Mỗi hành động nhỏ đều góp phần tạo nên thay đổi lớn cho biển.
+        </p>
+      </div>
+
+      <!-- Highlights -->
+      <div class="section" id="highlights">
+        <h2>Highlights</h2>
+        <div class="divider"></div>
+
+        <div class="cards">
+          <!-- Card 1 -->
+          <article class="card" onclick="openInfo('Giảm rác thải nhựa', 'Cùng thay đổi thói quen hằng ngày: mang bình nước cá nhân, dùng túi tái sử dụng, phân loại rác đúng cách.')">
+            <div class="img">
+              <!-- ẢNH LOCAL: thay file trong assets/images hoặc đổi src -->
+              <img src="rac.png" alt="Highlight 1">
+            </div>
+            <div class="body">
+              <h3 class="title">Rác thải nhựa</h3>
+              <p class="desc">Giảm nhựa dùng một lần để bảo vệ sinh vật biển.</p>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card" onclick="openInfo('Phục hồi san hô', 'Tham gia trồng lại san hô, bảo vệ rạn và hỗ trợ đa dạng sinh học vùng ven biển.')">
+            <div class="img">
+              <img src="bien.png" alt="Highlight 2">
+            </div>
+            <div class="body">
+              <h3 class="title">Biển &amp; San hô</h3>
+              <p class="desc">Bảo tồn rạn san hô – “lá phổi” của đại dương.</p>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card" onclick="openInfo('Bảo vệ sinh vật biển', 'Tôn trọng tự nhiên: không mua bán sản phẩm từ loài nguy cấp, không xả rác, không chạm vào sinh vật khi lặn.')">
+            <div class="img">
+              <img src="marine-creature.png" alt="Highlight 3">
+            </div>
+            <div class="body">
+              <h3 class="title">Sinh vật biển</h3>
+              <p class="desc">Giữ môi trường sống an toàn cho các loài dưới nước.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Góc bảo tồn -->
+      <div class="section" id="corner">
+        <h2>Góc Bảo tồn</h2>
+        <div class="divider"></div>
+
+        <div class="actions">
+          <div class="action">
+            <div class="icon-round"><i class="fa-solid fa-leaf"></i></div>
+            <h3>Giảm thiểu nhựa</h3>
+            <div class="btn-row">
+              <a class="btn" href="gallery.html" title="Tìm hiểu thêm">
+                Tìm hiểu thêm <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="action">
+            <div class="icon-round"><i class="fa-solid fa-water"></i></div>
+            <h3>Trồng lại san hô</h3>
+            <div class="btn-row">
+              <a class="btn" href="gallery.html" title="Ủng hộ thêm">
+                Ủng hộ thêm <i class="fa-solid fa-hand-holding-heart"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="action">
+            <div class="icon-round"><i class="fa-solid fa-heart"></i></div>
+            <h3>Cảm ơn bạn cùng cố!</h3>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- mini modal (nhẹ, hợp style) -->
+    <div id="infoModal" style="display:none;">
+      <div id="infoOverlay" style="
+        position:fixed; inset:0; z-index:60;
+        background: rgba(255,255,255,.82);
+        backdrop-filter: blur(10px);
+      "></div>
+
+      <div style="
+        position:fixed; inset:0; z-index:61;
+        display:flex; align-items:center; justify-content:center;
+        padding:18px;
+      ">
+        <div style="
+          width: min(720px, calc(100vw - 28px));
+          border-radius: 22px;
+          background:#fff;
+          border:1px solid rgba(0,0,0,.06);
+          box-shadow: 0 30px 90px rgba(0,0,0,.18);
+          padding:18px 18px 16px;
+          position:relative;
+        ">
+          <button id="infoClose" title="Close" style="
+            position:absolute; top:10px; right:10px;
+            width:40px; height:40px; border-radius:999px;
+            border:1px solid rgba(0,0,0,.06);
+            background: rgba(255,255,255,.95);
+            color: rgba(0,0,0,.55);
+            display:grid; place-items:center;
+            cursor:pointer;
+          ">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <h3 id="infoTitle" style="margin:4px 0 8px; font-size:22px; color:rgba(0,0,0,.85); letter-spacing:.2px;"></h3>
+          <p id="infoText" style="margin:0; line-height:1.65; color:rgba(0,0,0,.62); font-size:14px;"></p>
+
+          <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+            <button id="infoOk" class="btn primary" style="border:none;">
+              Đóng <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Search icon focus: nếu bạn muốn sau này thêm search input thì giữ hook này
+    document.getElementById("focusSearch").addEventListener("click", () => {
+      // demo nhỏ: scroll tới highlights
+      document.getElementById("highlights").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    const infoModal = document.getElementById("infoModal");
+    const infoOverlay = document.getElementById("infoOverlay");
+    const infoClose = document.getElementById("infoClose");
+    const infoOk = document.getElementById("infoOk");
+
+    function openInfo(title, text){
+      document.getElementById("infoTitle").textContent = title;
+      document.getElementById("infoText").textContent = text;
+      infoModal.style.display = "block";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeInfo(){
+      infoModal.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+
+    infoOverlay.addEventListener("click", closeInfo);
+    infoClose.addEventListener("click", closeInfo);
+    infoOk.addEventListener("click", closeInfo);
+
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape" && infoModal.style.display === "block") closeInfo();
+    });
+  </script>
+  <!-- Page Loader -->
+<script src="loader.js"></script>
+
+</body>
+</html>

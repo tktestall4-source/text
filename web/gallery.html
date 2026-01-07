@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery | Oceania</title>
+<link rel="stylesheet" href="loader.css">
+
+  <!-- Font Awesome icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff;
+      color:#1a1a1a;
+    }
+
+    .panel{
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+
+      background: #BDE8F5;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+    }
+
+    /* TOP BAR */
+    .topbar{
+      position: absolute;
+      top: 14px;
+      left: 0;
+      right: 0;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .nav{
+      pointer-events: auto;
+      display: flex;
+      gap: 34px;
+      align-items: center;
+      font-size: 13px;
+      letter-spacing: .2px;
+      color: rgba(0,0,0,.55);
+      user-select: none;
+    }
+
+    .nav a{
+      text-decoration: none;
+      color: inherit;
+      padding: 6px 2px;
+      position: relative;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0%;
+      height:1px;
+      background: rgba(0,0,0,.45);
+      transition: width .25s ease;
+    }
+    .nav a:hover::after{ width:100%; }
+
+    .nav a.active{
+      color: rgba(0,0,0,.75);
+    }
+    .nav a.active::after{
+      width:100%;
+    }
+
+    .search{
+      pointer-events: auto;
+      position: absolute;
+      right: 22px;
+      top: 0;
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: rgba(0,0,0,.55);
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .search:hover{
+      background: rgba(255,255,255,.55);
+      transform: translateY(-1px);
+    }
+
+    /* SOCIAL ICONS */
+    .social{
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 5;
+    }
+    .social a{
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: rgba(0,0,0,.55);
+      text-decoration: none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .social a:hover{
+      transform: translateX(-2px);
+      background: rgba(255,255,255,.55);
+    }
+
+    /* ====== Content ====== */
+    .content{
+      position: relative;
+      z-index: 2;
+      width: min(1200px, calc(100vw - 44px));
+      margin: 0 auto;
+      padding: 96px 0 42px;
+    }
+
+    .hero{
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      backdrop-filter: blur(8px);
+    }
+    .hero h1{
+      margin:0;
+      font-size: clamp(20px, 2.6vw, 34px);
+      letter-spacing: .2px;
+      color: rgba(0,0,0,.80);
+    }
+
+    .controls{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    .searchbox{
+      flex: 1 1 320px;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(0,0,0,.06);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 22px rgba(0,0,0,.06);
+    }
+    .searchbox i{ color: rgba(0,0,0,.55); }
+    .searchbox input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size: 13px;
+      color: rgba(0,0,0,.75);
+    }
+    .searchbox input::placeholder{ color: rgba(0,0,0,.40); }
+
+    .chips{
+      flex: 0 0 auto;
+      display:flex;
+      gap: 8px;
+      overflow:auto;
+      padding-bottom: 2px;
+      max-width: 100%;
+    }
+    .chips::-webkit-scrollbar{ height: 6px; }
+    .chips::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.18); border-radius: 999px; }
+    .chips::-webkit-scrollbar-track{ background: rgba(255,255,255,.45); border-radius: 999px; }
+
+    .chip{
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.55);
+      color: rgba(0,0,0,.55);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.75);
+      border-color: rgba(0,0,0,.12);
+      color: rgba(0,0,0,.70);
+    }
+    .chip.active{
+      background: rgba(255,255,255,.86);
+      border-color: rgba(0,0,0,.14);
+      color: rgba(0,0,0,.78);
+    }
+
+    /* grid cards */
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0 4px;
+    }
+    @media (max-width: 1100px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 760px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 26px rgba(0,0,0,.08);
+      cursor:pointer;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+      min-height: 220px;
+      display:flex;
+      flex-direction:column;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(0,0,0,.12);
+      background: rgba(255,255,255,.70);
+    }
+
+    .thumb{
+      height: 128px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, rgba(240,249,255,.95), rgba(224,242,254,.85));
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+
+    /* ===== ẢNH TRONG Ô ===== */
+    .thumb img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* không bị cắt */
+      padding: 10px;
+      transition: transform .4s ease;
+      display:block;
+    }
+    .card:hover .thumb img{
+      transform: scale(1.08);
+    }
+
+    .card-body{
+      padding: 12px 12px 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .tag{
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.05);
+      border: 1px solid rgba(0,0,0,.06);
+      color: rgba(0,0,0,.55);
+      font-weight: 750;
+      width: fit-content;
+    }
+
+    .name{
+      margin:0;
+      font-size: 15px;
+      font-weight: 750;
+      color: rgba(0,0,0,.80);
+      line-height: 1.25;
+    }
+    .sci{
+      margin:0;
+      font-size: 12px;
+      color: rgba(0,0,0,.52);
+      font-style: italic;
+    }
+
+    .cta{
+      margin-top:auto;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.06);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.45);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .empty{
+      grid-column: 1/-1;
+      padding: 54px 10px;
+      text-align:center;
+      border-radius: 18px;
+      border: 1px dashed rgba(0,0,0,.16);
+      background: rgba(255,255,255,.55);
+      color: rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+    }
+
+    /* ===== Modal ===== */
+    .modal{
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .modal.show{ display:flex; }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-card{
+      position: relative;
+      width: min(980px, calc(100vw - 28px));
+      max-height: min(84vh, 760px);
+      overflow:hidden;
+      border-radius: 26px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: #fff;
+      box-shadow: 0 30px 90px rgba(0,0,0,.18);
+      display:grid;
+      grid-template-columns: 340px 1fr;
+    }
+    @media (max-width: 860px){
+      .modal-card{ grid-template-columns: 1fr; }
+    }
+
+    .modal-left{
+      padding: 34px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-right: 1px solid rgba(0,0,0,.06);
+    }
+    @media (max-width: 860px){
+      .modal-left{ border-right:none; border-bottom: 1px solid rgba(0,0,0,.06); }
+    }
+
+    /* ===== ẢNH TRONG MODAL ===== */
+    .modal-left img{
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      object-fit: contain;
+      display:block;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,.12));
+    }
+
+    .modal-right{
+      padding: 20px 20px 22px;
+      overflow:auto;
+    }
+    .modal-right::-webkit-scrollbar{ width: 8px; }
+    .modal-right::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.18); border-radius: 999px; }
+    .modal-right::-webkit-scrollbar-track{ background: rgba(0,0,0,.06); border-radius: 999px; }
+
+    .close{
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(255,255,255,.95);
+      color: rgba(0,0,0,.55);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition: transform .2s ease, background .2s ease;
+      z-index: 2;
+    }
+    .close:hover{
+      transform: translateY(-1px);
+      background: rgba(0,0,0,.04);
+    }
+
+    .badges{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .badge{
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(0,0,0,.04);
+      color: rgba(0,0,0,.60);
+      font-weight: 800;
+    }
+    .badge.status.red{ background: rgba(255,0,0,.08); border-color: rgba(255,0,0,.12); color: rgba(180,0,0,.75); }
+    .badge.status.green{ background: rgba(0,180,90,.08); border-color: rgba(0,180,90,.12); color: rgba(0,120,60,.78); }
+
+    .m-name{
+      margin: 4px 0 2px;
+      font-size: clamp(22px, 3vw, 38px);
+      color: rgba(0,0,0,.85);
+      letter-spacing: .2px;
+    }
+    .m-sci{
+      margin: 0 0 14px;
+      font-style: italic;
+      color: rgba(0,0,0,.45);
+    }
+
+    .m-grid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 560px){
+      .m-grid{ grid-template-columns: 1fr; }
+    }
+    .m-block{
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(0,0,0,.02);
+      border-radius: 16px;
+      padding: 12px 12px;
+      line-height: 1.55;
+    }
+    .m-block h4{
+      margin:0 0 6px;
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.45);
+    }
+    .m-block p{ margin:0; font-size: 13px; color: rgba(0,0,0,.70); }
+
+    @media (max-width: 520px){
+      .nav{ gap: 18px; font-size: 12px; }
+      .topbar{ padding: 0 14px; }
+      .search{ right: 14px; }
+      .social{ right: 10px; }
+      .content{ padding-top: 92px; width: calc(100vw - 28px); }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="panel">
+
+    <header class="topbar">
+      <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a class="active" href="gallery.html">Gallery</a>
+        <a href="conservation.html">Conservation</a>
+      </nav>
+
+      <div class="search" id="focusSearch" title="Search (Ctrl/Cmd + K)">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </header>
+
+    <aside class="social" aria-label="Social Links">
+      <a href="https://www.facebook.com/profile.php?id=61577759272385" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/nguyn.minh859/" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://x.com/NguynMinht457" title="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+    </aside>
+
+    <section class="content">
+      <div class="hero">
+        <h1>Thư viện sinh vật biển</h1>
+      </div>
+
+      <div class="controls">
+        <div class="searchbox" title="Nhập để tìm">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="searchInput" type="text" placeholder="Tìm tên cá, động vật có vú, san hô..." />
+        </div>
+
+        <div class="chips" aria-label="Filters">
+          <button class="chip active" data-type="Tất cả">Tất cả</button>
+          <button class="chip" data-type="Cá">Cá</button>
+          <button class="chip" data-type="Động vật có vú">Động vật có vú</button>
+          <button class="chip" data-type="Thân mềm">Thân mềm</button>
+          <button class="chip" data-type="San hô">San hô</button>
+        </div>
+      </div>
+
+      <div id="creatureGrid" class="grid" aria-live="polite"></div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="detailModal" aria-hidden="true">
+      <div class="overlay" id="overlay"></div>
+
+      <div class="modal-card" role="dialog" aria-modal="true" aria-label="Creature details">
+        <button class="close" id="closeBtn" title="Close (ESC)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-left">
+          <div id="modalMedia"></div>
+        </div>
+
+        <div class="modal-right">
+          <div class="badges">
+            <span class="badge" id="modalType"></span>
+            <span class="badge status" id="modalStatus"></span>
+          </div>
+
+          <h2 class="m-name" id="modalName"></h2>
+          <p class="m-sci" id="modalScientific"></p>
+
+          <div class="m-grid">
+            <div class="m-block">
+              <h4>Đặc điểm</h4>
+              <p id="modalDesc"></p>
+            </div>
+            <div class="m-block">
+              <h4>Khu vực phân bố</h4>
+              <p id="modalHabitat"></p>
+            </div>
+            <div class="m-block">
+              <h4>Kích thước</h4>
+              <p id="modalSize"></p>
+            </div>
+            <div class="m-block">
+              <h4>Tình trạng</h4>
+              <p id="modalStatusText"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+
+    const oceanCreatures = [
+      {
+        id: 1,
+        name: "Cá Voi Xanh",
+        scientific: "Balaenoptera musculus",
+        type: "Động vật có vú",
+        image: "cavoi.png",
+        desc: "Động vật lớn nhất từng tồn tại trên Trái Đất. Tiếng hát của chúng có thể truyền đi hàng nghìn dặm dưới lòng đại dương.",
+        habitat: "Tất cả các đại dương trừ vùng cực",
+        size: "25 - 30 mét",
+        status: "Nguy cấp"
+      },
+      {
+        id: 2,
+        name: "Cá Mập Trắng",
+        scientific: "Carcharodon carcharias",
+        type: "Cá",
+        image: "camap.png",
+        desc: "Loài cá săn mồi lớn nhất thế giới. Chúng có khứu giác cực nhạy, có thể phát hiện một giọt máu trong 100 lít nước.",
+        habitat: "Vùng biển ôn đới và nhiệt đới",
+        size: "4.5 - 6 mét",
+        status: "Sắp nguy cấp"
+      },
+      {
+        id: 3,
+        name: "Bạch Tuộc Khổng Lồ",
+        scientific: "Enteroctopus dofleini",
+        type: "Thân mềm",
+        image: "octopus.png",
+        desc: "Được biết đến là loài bạch tuộc lớn nhất và có tuổi thọ cao nhất. Chúng vô cùng thông minh và có khả năng giải quyết các vấn đề phức tạp.",
+        habitat: "Bắc Thái Bình Dương",
+        size: "3 - 5 mét (sải tay)",
+        status: "Ít quan tâm"
+      },
+      {
+        id: 4,
+        name: "Cá Ngựa Lùn",
+        scientific: "Hippocampus bargibanti",
+        type: "Cá",
+        image: "cangua.png",
+        desc: "Bậc thầy ngụy trang, chúng sống bám trên các rặng san hô quạt và có màu sắc y hệt vật chủ để tránh kẻ thù.",
+        habitat: "Trung tâm Ấn Độ Dương - Thái Bình Dương",
+        size: "1 - 2 cm",
+        status: "Thiếu dữ liệu"
+      },
+      {
+        id: 5,
+        name: "San Hô Não",
+        scientific: "Diploria labyrinthiformis",
+        type: "San hô",
+        image: "sanho.png",
+        desc: "Có hình dạng giống bộ não người với các rãnh uốn lượn. Đây là loài san hô xây dựng rạn san hô quan trọng và sống rất thọ.",
+        habitat: "Tây Đại Tây Dương",
+        size: "Lên đến 1.8 mét",
+        status: "Bị đe dọa"
+      },
+      {
+        id: 6,
+        name: "Cá Heo Mũi Chai",
+        scientific: "Tursiops truncatus",
+        type: "Động vật có vú",
+        image: "caheo.png",
+        desc: "Loài động vật biển thông minh và thân thiện nhất với con người. Chúng giao tiếp bằng hệ thống âm thanh siêu âm phức tạp.",
+        habitat: "Vùng biển ấm trên toàn thế giới",
+        size: "2 - 4 mét",
+        status: "Ít quan tâm"
+      },
+      {
+        id: 7,
+        name: "Mực Khổng Lồ",
+        scientific: "Architeuthis dux",
+        type: "Thân mềm",
+        image: "muc.png",
+        desc: "Sinh vật huyền thoại của vùng biển sâu. Chúng có đôi mắt lớn nhất trong thế giới động vật, to bằng một chiếc đĩa ăn.",
+        habitat: "Đại dương sâu thẳm",
+        size: "10 - 13 mét",
+        status: "Ít quan tâm"
+      },
+      {
+        id: 8,
+        name: "Dugong (Cá Cúi)",
+        scientific: "Dugong dugon",
+        type: "Động vật có vú",
+        image: "dugong.png",
+        desc: "Thường được gọi là 'Bò biển', chúng là loài động vật có vú ăn thực vật duy nhất sống hoàn toàn dưới nước.",
+        habitat: "Vùng duyên hải Ấn Độ - Thái Bình Dương",
+        size: "2.5 - 3 mét",
+        status: "Sắp nguy cấp"
+      }
+    ];
+
+    let activeType = "Tất cả";
+
+    const grid = document.getElementById("creatureGrid");
+    const searchInput = document.getElementById("searchInput");
+    const focusSearch = document.getElementById("focusSearch");
+
+    const modal = document.getElementById("detailModal");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+
+    function renderGrid(type = "Tất cả", search = "") {
+      grid.innerHTML = "";
+      const q = search.trim().toLowerCase();
+
+      const filtered = oceanCreatures.filter(c => {
+        const matchesType = type === "Tất cả" || c.type === type;
+        const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.scientific.toLowerCase().includes(q);
+        return matchesType && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty">Không tìm thấy sinh vật phù hợp. Thử từ khóa khác hoặc đổi bộ lọc.</div>`;
+        return;
+      }
+
+      filtered.forEach(c => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.onclick = () => openModal(c);
+
+        card.innerHTML = `
+          <div class="thumb">
+            <img src="${c.image}" alt="${c.name}" loading="lazy">
+          </div>
+          <div class="card-body">
+            <span class="tag">${c.type}</span>
+            <h3 class="name">${c.name}</h3>
+            <p class="sci">${c.scientific}</p>
+            <div class="cta">
+              <span>Xem thông tin</span>
+              <span>→</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setActiveChip(type){
+      activeType = type;
+      document.querySelectorAll(".chip").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.type === type);
+      });
+      renderGrid(activeType, searchInput.value);
+    }
+
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => setActiveChip(btn.dataset.type));
+    });
+
+    function openModal(c){
+      // ảnh trong modal
+      document.getElementById("modalMedia").innerHTML = `
+        <img src="${c.image}" alt="${c.name}">
+      `;
+
+      document.getElementById("modalType").textContent = c.type;
+      document.getElementById("modalName").textContent = c.name;
+      document.getElementById("modalScientific").textContent = c.scientific;
+      document.getElementById("modalDesc").textContent = c.desc;
+      document.getElementById("modalHabitat").textContent = c.habitat;
+      document.getElementById("modalSize").textContent = c.size;
+
+      const statusTag = document.getElementById("modalStatus");
+      const statusText = document.getElementById("modalStatusText");
+      statusText.textContent = c.status;
+
+      statusTag.classList.remove("red","green");
+      statusTag.textContent = c.status;
+
+      const danger = (c.status === "Nguy cấp" || c.status === "Bị đe dọa" || c.status === "Sắp nguy cấp");
+      statusTag.classList.add(danger ? "red" : "green");
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "auto";
+    }
+
+    overlay.addEventListener("click", closeModal);
+    closeBtn.addEventListener("click", closeModal);
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        if(modal.classList.contains("show")) closeModal();
+        else { searchInput.value = ""; renderGrid(activeType, ""); }
+      }
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    searchInput.addEventListener("input", (e) => renderGrid(activeType, e.target.value));
+    focusSearch.addEventListener("click", () => searchInput.focus());
+
+    // init
+    renderGrid(activeType, "");
+  </script>
+  <!-- Page Loader -->
+<script src="loader.js"></script>
+
+</body>
+</html>

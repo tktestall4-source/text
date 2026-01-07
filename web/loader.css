@@ -1,0 +1,29 @@
+#pageLoader{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  opacity: 100;
+  transition: opacity .6s ease;
+}
+
+#pageLoader.hide{
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loaderIcon{
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%{ transform: translateY(0); }
+  50%{ transform: translateY(-10px); }
+  100%{ transform: translateY(0); }
+}
