@@ -4,74 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Full Panel Layout</title>
-<link rel="stylesheet" href="loader.css">
 
-  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="loader.css">
+
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
-.site-footer{
-  padding: 18px 16px;
-  margin-top: 40px;
-  border-top: 1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-}
 
-.footer-inner{
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  color: rgba(255,255,255,0.85);
-  font-size: 14px;
-}
-
-.site-footer a{
-  color: rgba(255,255,255,0.9);
-  text-decoration: none;
-}
-
-.site-footer a:hover{
-  text-decoration: underline;
-}
-
-.dot{
-  margin: 0 8px;
-  opacity: 0.7;
-}
+    html, body { height: auto; }
 
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #ffffff; /* không cần nhưng để rõ */
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* FULL MÀN HÌNH (phần bạn gọi là "phần ở giữa") */
-  .panel{
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
+    main.panel{
+      flex: 1;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background-image: url("ocean1.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-  /* NỀN ẢNH */
-  background-image: url("ocean1.png"); /* đổi tên nếu ảnh khác */
-  background-size: cover;        /* phủ kín màn hình */
-  background-position: center;   /* không lệch */
-  background-repeat: no-repeat;
-
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
-}
-
-    /* TOP BAR */
     .topbar{
       position: absolute;
       top: 14px;
@@ -113,6 +77,7 @@
       background: rgba(0,0,0,.45);
       transition: width .25s ease;
     }
+
     .nav a:hover::after{ width:100%; }
 
     .search{
@@ -129,12 +94,12 @@
       cursor: pointer;
       transition: background .2s ease, transform .2s ease;
     }
+
     .search:hover{
       background: rgba(255,255,255,.55);
       transform: translateY(-1px);
     }
 
-    /* SOCIAL ICONS (bên phải) */
     .social{
       position: absolute;
       right: 18px;
@@ -162,54 +127,85 @@
       background: rgba(255,255,255,.55);
     }
 
-    /* Responsive */
+    .site-footer{
+      padding: 18px 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+    }
+
+    .site-footer a{
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover{
+      text-decoration: underline;
+    }
+
+    .dot{
+      margin: 0 8px;
+      opacity: 0.7;
+    }
+
     @media (max-width: 520px){
       .nav{ gap: 18px; font-size: 12px; }
       .topbar{ padding: 0 14px; }
       .search{ right: 14px; }
       .social{ right: 10px; }
+      .footer-inner{ justify-content: center; text-align: center; }
     }
   </style>
 </head>
 
 <body>
+
   <main class="panel">
     <header class="topbar">
-      <nav class="nav" aria-label="Main Navigation">
+      <nav class="nav">
         <a href="#">Home</a>
         <a href="gallery.html">Gallery</a>
         <a href="conservation.html">Conservation</a>
       </nav>
 
-      <div class="search" title="Search">
+      <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
       </div>
     </header>
 
-    <aside class="social" aria-label="Social Links">
-      <a href="https://www.facebook.com/profile.php?id=61577759272385" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/nguyn.minh859/" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://x.com/NguynMinht457" title="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+    <aside class="social">
+      <a href="https://www.facebook.com/profile.php?id=61577759272385" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/nguyn.minh859/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://x.com/NguynMinht457" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
     </aside>
   </main>
-  <!-- Page Loader -->
 
-<script src="loader.js"></script>
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-left">
-      <strong>Nguyễn Công Minh 12C1</strong> 
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <strong>Nguyễn Công Minh 12C1</strong>
+      <div>
+        <a href="mailto:tktesttq4@gmail.com">tktesttq4@gmail.com</a>
+        <span class="dot">•</span>
+        <a href="https://facebook.com/yourprofile" target="_blank">Facebook</a>
+        <span class="dot">•</span>
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      </div>
     </div>
+  </footer>
 
-    <div class="footer-right">
-      <a href="mailto:youremail@gmail.com">tktesttq4@@gmail.com</a>
-      <span class="dot">•</span>
-      <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener">Facebook</a>
-      <span class="dot">•</span>
-      <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
-    </div>
-  </div>
-</footer>
+  <script src="loader.js"></script>
 
 </body>
 </html>
